@@ -38,7 +38,7 @@ jobs:
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v1
-      - name: Notify discord
+      - name: Notify job status
         uses: th0th/notify-discord@v0.4.1
         if: ${{ always() }}
         env:
