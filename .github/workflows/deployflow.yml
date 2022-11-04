@@ -39,6 +39,7 @@ jobs:
         id: deployment
         uses: actions/deploy-pages@v1
   notify:
+    needs: build-and-deploy-app
     runs-on: ubuntu-latest
     environment:
       name: github-pages
