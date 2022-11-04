@@ -34,12 +34,11 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v1
         with:
-          path: 'docs'
+          path: 'docs1'
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v1
   notify:
-    needs: build-and-deploy-app
     runs-on: ubuntu-latest
     environment:
       name: github-pages
