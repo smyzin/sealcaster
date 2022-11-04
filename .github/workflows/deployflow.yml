@@ -38,20 +38,6 @@ jobs:
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v1
-      - uses: sarisia/actions-status-discord@v1
-        if: success()
-        env:
-          DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
-        with:
-          nodetail: true
-          title: '✅ sealcaster.xyz deployed'
-      - uses: sarisia/actions-status-discord@v1
-        if: failure()
-        env:
-          DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
-        with:
-          nodetail: true
-          title: '💥 sealcaster.xyz failed to deploy @dev'
   notify:
     needs: build-and-deploy-app
     runs-on: ubuntu-latest
