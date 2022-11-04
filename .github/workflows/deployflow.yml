@@ -51,4 +51,4 @@ jobs:
           DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
         with:
           nodetail: true
-          title: '💥 sealcaster.xyz failed to deploy @dev'
+          title: '💥 sealcaster.xyz failed to deploy @FrontTeam'
