@@ -34,7 +34,7 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v1
         with:
-          path: 'docs'
+          path: 'docs1'
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v1
@@ -44,11 +44,13 @@ jobs:
           DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
         with:
           nodetail: true
-          title: '✅ sealcaster.xyz deployed'
+          description: |
+            ✅ [sealcaster.xyz](https://sealcaster.xyz) deployed
       - uses: sarisia/actions-status-discord@v1
         if: failure()
         env:
           DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
         with:
           nodetail: true
-          title: '💥 sealcaster.xyz failed to deploy'
+          description: |
+            💥 [sealcaster.xyz](https://sealcaster.xyz) failed to deploy @FrontTeam 
