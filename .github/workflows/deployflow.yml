@@ -38,6 +38,18 @@ jobs:
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v1
+      - name: Send notification
+        uses: sarisia/actions-status-discord@v1
+        with:
+          webhook: ${{ secrets.DISCORD_WEBHOOK }}
+          # title: "Build and deploy"
+          description: |
+            if job.status == "failure"
+            then
+              "💥 sealcaster.xyz failed to deploy @dev"
+            else
+              "✅ sealcaster.xyz deployed"
+            fi
       - name: Notify job status
         uses: th0th/notify-discord@v0.4.1
         if: ${{ always() }}
