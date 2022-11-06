@@ -3,8 +3,6 @@ on:
   push:
     branches:
       - main
-env:
-  deploy_url: ${{ steps.deployment.outputs.page_url }}
 jobs:
   build-and-deploy-app:
     permissions:
