@@ -52,7 +52,7 @@ jobs:
         with:
           url: https://discord.com/api/webhooks/${{ secrets.DISCORD_CHANNEL_ID }}/${{ secrets.DISCORD_BOT_ID }}
           method: POST
-          payload: '{"content": "💥 sealcaster.xyz (${{ deploy_url }}) failed to deploy <@&985925346178256946>"}'
+          payload: '{"content": "💥 sealcaster.xyz (${{ env.deploy_url }}) failed to deploy <@&985925346178256946>"}'
           headers: '{"Authorization": "Bot ${{ secrets.DISCORD_BOT_ID }}"}'
       - name: Show
         env:
