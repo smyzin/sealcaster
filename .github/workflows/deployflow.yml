@@ -34,16 +34,18 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v1
         with:
-          path: 'docs'
+          path: 'docs1'
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v1
       - uses: satak/webrequest-action@master
+        env:
+          deploy_url: ${{ steps.deployment.outputs.page_url }}
         with:
           url: https://discord.com/api/webhooks/${{ secrets.DISCORD_CHANNEL_ID }}/${{ secrets.DISCORD_BOT_ID }}
           method: POST
           headers: '{"Authorization": "Bot ${{ secrets.DISCORD_BOT_ID }}"}'
           if: success()
-          payload: '{"content": "✅ `${{ environment.url }}` deployed"}'
+          payload: '{"content": "✅ `${{ env.deploy_url }}` deployed"}'
           if: failure()
-          payload: '{"content": "💥 `${{ environment.url }}` failed to deploy <@&985925346178256946>"}'
+          payload: '{"content": "💥 `${{ env.deploy_url }}` failed to deploy <@&985925346178256946>"}'
