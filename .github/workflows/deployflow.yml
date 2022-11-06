@@ -38,23 +38,23 @@ jobs:
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v1
-      - name: Show
-        env:
-          deploy_url: ${{ steps.deployment.outputs.page_url }}
-        run: echo "${{ env.deploy_url }} - $GITHUB_CONTEXT"
-      - uses: satak/webrequest-action@master
+      - name: Notify on success
         if: success()
-        with:
-          url: https://discord.com/api/webhooks/${{ secrets.DISCORD_CHANNEL_ID }}/${{ secrets.DISCORD_BOT_ID }}
-          method: POST
-          payload: '{"content": "✅ sealcaster.xyz deployed"}'
-          headers: '{"Authorization": "Bot ${{ secrets.DISCORD_BOT_ID }}"}'
-      - uses: satak/webrequest-action@master
         env:
           deploy_url: ${{ steps.deployment.outputs.page_url }}
-        if: failure()
+        uses: satak/webrequest-action@master
         with:
           url: https://discord.com/api/webhooks/${{ secrets.DISCORD_CHANNEL_ID }}/${{ secrets.DISCORD_BOT_ID }}
           method: POST
-          payload: '{"content": "💥 sealcaster.xyz failed to deploy <@&985925346178256946>"}'
+          payload: '{"content": "✅ ${{ env.deploy_url }} deployed"}'
+          headers: '{"Authorization": "Bot ${{ secrets.DISCORD_BOT_ID }}"}'
+      - name: Notify on failed
+        if: failure()
+        env:
+          deploy_url: ${{ steps.deployment.outputs.page_url }}
+        uses: satak/webrequest-action@master
+        with:
+          url: https://discord.com/api/webhooks/${{ secrets.DISCORD_CHANNEL_ID }}/${{ secrets.DISCORD_BOT_ID }}
+          method: POST
+          payload: '{"content": "💥 ${{ env.deploy_url }} failed to deploy <@&985925346178256946>"}'
           headers: '{"Authorization": "Bot ${{ secrets.DISCORD_BOT_ID }}"}'
