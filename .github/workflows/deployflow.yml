@@ -3,6 +3,8 @@ on:
   push:
     branches:
       - main
+env:
+  deploy_url: ${{ steps.deployment.outputs.page_url }}
 jobs:
   build-and-deploy-app:
     permissions:
@@ -52,5 +54,5 @@ jobs:
         with:
           url: https://discord.com/api/webhooks/${{ secrets.DISCORD_CHANNEL_ID }}/${{ secrets.DISCORD_BOT_ID }}
           method: POST
-          payload: '{"content": "💥 ${{ environment.url }} ${{ deploy_url }} failed to deploy <@&985925346178256946>"}'
+          payload: '{"content": "💥 ${{ env.deploy_url }} ${{ deploy_url }} failed to deploy <@&985925346178256946>"}'
           headers: '{"Authorization": "Bot ${{ secrets.DISCORD_BOT_ID }}"}'
