@@ -38,20 +38,17 @@ jobs:
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v1
-      - uses: sarisia/actions-status-discord@v1
+      - uses: satak/webrequest-action@master
         if: success()
-        env:
-          DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
         with:
-          nodetail: true
-          title: 'Success'
-          description: |
-            ✅ [sealcaster.xyz](https://sealcaster.xyz) deployed
-      - uses: sarisia/actions-status-discord@v1
+          url: https://discord.com/api/webhooks/${{ secrets.DISCORD_CHANNEL_ID }}/${{ secrets.DISCORD_BOT_ID }}
+          method: POST
+          payload: '{"name": "✅ ${{ steps.deployment.outputs.page_url }} deployed"}' 
+          headers: '{"Authorization": "Bot ${{ secrets.DISCORD_BOT_ID }}"}'
+      - uses: satak/webrequest-action@master
         if: failure()
-        env:
-          DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
         with:
-          nodetail: true
-          title: 'Failed'
-          description: 'sealcaster.xyz failed to deploy <@&985925346178256946>'
+          url: https://discord.com/api/webhooks/${{ secrets.DISCORD_CHANNEL_ID }}/${{ secrets.DISCORD_BOT_ID }}
+          method: POST
+          payload: '{"name": "💥 ${{ steps.deployment.outputs.page_url }} failed to deploy <@&985925346178256946>"}' 
+          headers: '{"Authorization": "Bot ${{ secrets.DISCORD_BOT_ID }}"}'
