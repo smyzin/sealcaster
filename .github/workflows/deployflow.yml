@@ -54,4 +54,7 @@ jobs:
           method: POST
           payload: '{"content": "💥 sealcaster.xyz (${{ deploy_url }}) failed to deploy <@&985925346178256946>"}'
           headers: '{"Authorization": "Bot ${{ secrets.DISCORD_BOT_ID }}"}'
-        run: echo "$GITHUB_CONTEXT"
+      - name: Show
+        env:
+          deploy_url: ${{ steps.deployment.outputs.page_url }}
+        run: echo "${{ deploy_url }} - $GITHUB_CONTEXT"
