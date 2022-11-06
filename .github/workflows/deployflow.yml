@@ -39,23 +39,11 @@ jobs:
         id: deployment
         uses: actions/deploy-pages@v1
       - uses: satak/webrequest-action@master
-        if: success()
-        # env:
-        #   deploy_url: ${{ steps.deployment.outputs.page_url }}
         with:
           url: https://discord.com/api/webhooks/${{ secrets.DISCORD_CHANNEL_ID }}/${{ secrets.DISCORD_BOT_ID }}
           method: POST
           headers: '{"Authorization": "Bot ${{ secrets.DISCORD_BOT_ID }}"}'
           if: success()
-            payload: '{"content": "✅ `${{ environment.url }}` deployed"}'
+          payload: '{"content": "✅ `${{ environment.url }}` deployed"}'
           if: failure()
-            payload: '{"content": "💥 `${{ environment.url }}` failed to deploy <@&985925346178256946>"}'
-      # - uses: satak/webrequest-action@master
-      #   if: failure()
-      #   # env:
-      #   #   deploy_url: ${{ steps.deployment.outputs.page_url }}
-      #   with:
-      #     url: https://discord.com/api/webhooks/${{ secrets.DISCORD_CHANNEL_ID }}/${{ secrets.DISCORD_BOT_ID }}
-      #     method: POST
-      #     payload: '{"content": "💥 `${{ environment.url }}` failed to deploy <@&985925346178256946>"}'
-      #     headers: '{"Authorization": "Bot ${{ secrets.DISCORD_BOT_ID }}"}'
+          payload: '{"content": "💥 `${{ environment.url }}` failed to deploy <@&985925346178256946>"}'
