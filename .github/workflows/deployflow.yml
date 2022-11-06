@@ -38,23 +38,21 @@ jobs:
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v1
-      - name: Notify on success
+      - uses: satak/webrequest-action@master
         if: success()
         env:
           deploy_url: ${{ steps.deployment.outputs.page_url }}
-        uses: satak/webrequest-action@master
         with:
           url: https://discord.com/api/webhooks/${{ secrets.DISCORD_CHANNEL_ID }}/${{ secrets.DISCORD_BOT_ID }}
           method: POST
-          payload: '{"content": "✅ ${{ env.deploy_url }} deployed"}'
+          payload: '{"content": "✅ `${{ env.deploy_url }}` deployed"}'
           headers: '{"Authorization": "Bot ${{ secrets.DISCORD_BOT_ID }}"}'
-      - name: Notify on failed
+      - uses: satak/webrequest-action@master
         if: failure()
         env:
           deploy_url: ${{ steps.deployment.outputs.page_url }}
-        uses: satak/webrequest-action@master
         with:
           url: https://discord.com/api/webhooks/${{ secrets.DISCORD_CHANNEL_ID }}/${{ secrets.DISCORD_BOT_ID }}
           method: POST
-          payload: '{"content": "💥 ${{ env.deploy_url }} failed to deploy <@&985925346178256946>"}'
+          payload: '{"content": "💥 `${{ env.deploy_url }}` failed to deploy <@&985925346178256946>"}'
           headers: '{"Authorization": "Bot ${{ secrets.DISCORD_BOT_ID }}"}'
