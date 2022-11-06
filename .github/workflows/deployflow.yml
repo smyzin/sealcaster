@@ -14,7 +14,6 @@ jobs:
       url: ${{ steps.deployment.outputs.page_url }}
     env:
       NODE_OPTIONS: '--max_old_space_size=4096'
-      deploy_to: ${{ steps.deployment.outputs.page_url }}
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -35,7 +34,7 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v1
         with:
-          path: 'docs1'
+          path: 'docs'
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v1
@@ -46,14 +45,17 @@ jobs:
         with:
           url: https://discord.com/api/webhooks/${{ secrets.DISCORD_CHANNEL_ID }}/${{ secrets.DISCORD_BOT_ID }}
           method: POST
-          payload: '{"content": "✅ `${{ environment.url }}` (`${{ env.deploy_to }}`) deployed"}'
           headers: '{"Authorization": "Bot ${{ secrets.DISCORD_BOT_ID }}"}'
-      - uses: satak/webrequest-action@master
-        if: failure()
-        # env:
-        #   deploy_url: ${{ steps.deployment.outputs.page_url }}
-        with:
-          url: https://discord.com/api/webhooks/${{ secrets.DISCORD_CHANNEL_ID }}/${{ secrets.DISCORD_BOT_ID }}
-          method: POST
-          payload: '{"content": "💥 `${{ environment.url }}` (`${{ env.deploy_to }}`) failed to deploy <@&985925346178256946>"}'
-          headers: '{"Authorization": "Bot ${{ secrets.DISCORD_BOT_ID }}"}'
+          if: success()
+            payload: '{"content": "✅ `${{ environment.url }}` deployed"}'
+          if: failure()
+            payload: '{"content": "💥 `${{ environment.url }}` failed to deploy <@&985925346178256946>"}'
+      # - uses: satak/webrequest-action@master
+      #   if: failure()
+      #   # env:
+      #   #   deploy_url: ${{ steps.deployment.outputs.page_url }}
+      #   with:
+      #     url: https://discord.com/api/webhooks/${{ secrets.DISCORD_CHANNEL_ID }}/${{ secrets.DISCORD_BOT_ID }}
+      #     method: POST
+      #     payload: '{"content": "💥 `${{ environment.url }}` failed to deploy <@&985925346178256946>"}'
+      #     headers: '{"Authorization": "Bot ${{ secrets.DISCORD_BOT_ID }}"}'
